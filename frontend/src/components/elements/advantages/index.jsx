@@ -13,14 +13,14 @@ import ArrayData7Img from '../../../assets/svg/lasso.sparkles.svg';
 
 const Advantages = () => {
   const ArrayData = [
-    { id: 0, image: ArrayData2Img, title: 'Peşəkar inkişaf imkanları ', description: 'Təlimlər, mentorluq və davamlı öyrənmə dəstəyi.' },
-    { id: 1, image: ArrayData6Img, title: 'Karyera yüksəlişi ', description: 'Ədalətli qiymətləndirmə və vəzifə artımı üçün şəffaf sistem.' },
-    { id: 2, image: ArrayData1Img, title: 'Komanda ruhu və əməkdaşlıq ', description: 'Hörmət və dəstək üzərində qurulmuş iş mühiti.' },
-    { id: 3, image: ArrayData4Img, title: 'İş-həyat balansı ', description: 'Çevik yanaşma və sağlam mühitdə fəaliyyət imkanı.' },
-    { id: 4, image: ArrayData5Img, title: 'Müxtəliflik və bərabər imkanlar ', description: 'Hər bir əməkdaşın səsinin dəyərləndirilməsi.' },
+    { id: 0, image: ArrayData2Img, title: 'Peşəkar inkişaf imkanları ', description: 'Təlimlər, mentorluq və davamlı öyrənmə dəstəyi' },
+    { id: 1, image: ArrayData6Img, title: 'Karyera yüksəlişi ', description: 'Ədalətli qiymətləndirmə və vəzifə artımı üçün şəffaf sistem' },
+    { id: 2, image: ArrayData1Img, title: 'Komanda ruhu və əməkdaşlıq ', description: 'Hörmət və dəstək üzərində qurulmuş iş mühiti' },
+    { id: 3, image: ArrayData4Img, title: 'İş-həyat balansı ', description: 'Çevik yanaşma və sağlam mühitdə fəaliyyət imkanı' },
+    { id: 4, image: ArrayData5Img, title: 'Müxtəliflik və bərabər imkanlar ', description: 'Hər bir əməkdaşın səsinin dəyərləndirilməsi' },
     // { id: 5, image: ArrayData2Img, title: 'Rahat iş mühiti ', description: 'Müasir infrastruktur və əməkdaşların ehtiyaclarına uyğun şərait.' },
-    { id: 6, image: ArrayData3Img, title: 'Şirkət dəyərlərinə bağlılıq ', description: 'Şəffaflıq, məsuliyyət və peşəkarlıq üzərində qurulan korporativ mədəniyyət.' },
-    { id: 7, image: ArrayData7Img, title: 'İnnovativ mühit', description: 'Yeniliklərə açıq, dinamik və rəqəmsallaşmış iş sistemi.' },
+    { id: 5, image: ArrayData3Img, title: 'Şirkət dəyərlərinə bağlılıq ', description: 'Şəffaflıq, məsuliyyət və peşəkarlıq üzərində qurulan korporativ mədəniyyət' },
+    { id: 6, image: ArrayData7Img, title: 'İnnovativ mühit', description: 'Yeniliklərə açıq, dinamik və rəqəmsallaşmış iş sistemi' },
 
 
   ];

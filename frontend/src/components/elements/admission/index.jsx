@@ -19,7 +19,7 @@ const Admission = () => {
   { id: 1, image: ArrayData2Img, title: 'Namizədlərin müraciəti', description: 'New ideas and advanced technologies are embraced to ensure forward-thinking solutions.', order: 2 },
   { id: 2, image: ArrayData3Img, title: 'CV dəyərləndirmə mərhələsi', description: 'Every interaction is built on transparency, truthfulness, and ethical behavior.', order: 3 },
   { id: 3, image: ArrayData4Img, title: 'İlkin seçim və müsahibə mərhələsi', description: 'Work is conducted with respect, efficiency, and unwavering dedication to standards.', order: 4 },
-  { id: 4, image: ArrayData5Img, title: 'Test və ya tapşırıq mərhələsi (xüsusi vəzifələr üçün)', description: 'Client data and processes are protected through strict and reliable safeguards.', order: 5 },
+  { id: 4, image: ArrayData5Img, title: 'Test və ya tapşırıq mərhələsi', description: 'Client data and processes are protected through strict and reliable safeguards.', order: 5 },
   { id: 5, image: ArrayData6Img, title: 'İş təklifinin verilməsi', description: 'Operations are designed to minimize environmental impact and promote sustainability.', order: 6 },
   { id: 6, image: ArrayData7Img, title: 'İşə qəbul prosesinin rəsmiləşdirilməsi', description: 'Commitments are honored with full responsibility for outcomes and actions.', order: 7 },
   { id: 7, image: ArrayData8Img, title: 'Uyğunlaşma və adaptasiya prosesi', description: 'Commitments are honored with full responsibility for outcomes and actions.', order: 8 },
@@ -50,11 +50,11 @@ const Admission = () => {
       } else if (width < 1200) {
         setItemsPerPage(6);
       } else {
-        setItemsPerPage(7);
+        setItemsPerPage(8);
       }
 
 
-      setShouldHideNav(ArrayData.length === 7 && width >= 1200);
+      setShouldHideNav(ArrayData.length === 8 && width >= 1200);
     };
 
     handleResize();
@@ -108,7 +108,7 @@ const Admission = () => {
 
         <div className="Section-Card">
           {visibleItems.map((item) => (
-            <div className="Cards Main-Card" key={item.id}>
+            <div className="Cards Admission-Card Main-Card" key={item.id}>
               <div className="Cards-Item SectionNumCard">
                 <img src={item.image} className='No-Select Section-Icons' />
                 <p>{item.title}</p>

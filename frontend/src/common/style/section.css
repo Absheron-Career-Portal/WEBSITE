@@ -186,7 +186,7 @@ box-shadow: var(--main-shadow);
 
 .SectionNumCard {
     padding: var(--safe-place) !important;
-    margin-right: 1.5rem;
+    /* margin-right: 1.5rem; */
 }
 
 .Cards .Cards-Item:last-child {
@@ -243,6 +243,10 @@ box-shadow: var(--main-shadow);
     color: var(--text-color);
     font-weight: 600;
     margin-bottom: var(--inner-safe-gap);
+}
+
+.Admission-Card p {
+    margin-bottom: calc(var(--inner-safe-gap)*2);
 }
 
 .Cards p:last-child {
@@ -560,6 +564,7 @@ box-shadow: var(--main-shadow);
 
 .Cards-grid:hover {
     box-shadow: var(--unfocus-shadow) !important;
+    cursor: pointer;
 }
 
 .Cards-grid:hover .card-title-grid,
@@ -1563,11 +1568,64 @@ box-shadow: var(--main-shadow);
     border: 1px var(--lime-color) solid;
 }
 
+.Section-Card-Grid-container .animated-1 p {
+    color: green;
+}
+
+.Section-Card-Grid-container .animated-1 a {
+    color: green;
+}
+
+.Section-Card-Grid-container .animated-1:hover a {
+    color: var(--primary-color);
+}
+
 .Section-Card-Grid-container .animated-1:hover {
-    border: 1px var(--lime-color-half-opacity) solid;
+    border: none;
 }
 
 /* .Section-Card-Grid-container .animated-1 .Classic-Button a {
     color: var(--darkLime-color);
 }
  */
+
+
+        
+        video {
+            width: 100%;
+            height: 100%;
+          border-radius: var(--secondary-radius);
+            display: block;
+            object-fit: cover;
+        }
+       .video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.video-container video {
+  object-fit: cover;
+}
+
+/* Hide default controls */
+.video-container video::-webkit-media-controls {
+  display: none !important;
+}
+
+.video-container video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+.video-container video::-webkit-media-controls-panel {
+  display: none !important;
+}
+
+.video-container video::-webkit-media-controls-play-button {
+  display: none !important;
+}
+
+.video-container video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}

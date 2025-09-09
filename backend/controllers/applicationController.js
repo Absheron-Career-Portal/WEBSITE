@@ -32,11 +32,11 @@ exports.submitApplication = async (req, res) => {
         <h2 style="color: #333; font-family: Arial, sans-serif;">New Job Application Received</h2>
         <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px; border: 1px solid #ddd;">
           <tr style="background-color: #f2f2f2;">
-            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; width: 30%;">Position:</td>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold; width: 30%;">Müraciət edilən vəzifə:</td>
             <td style="border: 1px solid #ddd; padding: 8px;">${jobTitle}</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Applicant:</td>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Ad, Soyad:</td>
             <td style="border: 1px solid #ddd; padding: 8px;">${firstName}</td>
           </tr>
           <tr style="background-color: #f2f2f2;">
@@ -44,19 +44,19 @@ exports.submitApplication = async (req, res) => {
             <td style="border: 1px solid #ddd; padding: 8px;">${email}</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Phone:</td>
-            <td style="border: 1px solid #000000ff; padding: 8px;">${mobile || 'Not provided'}</td>
+            <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">Telefon:</td>
+         <td style="border: 1px solid #000000ff; padding: 8px;">${mobile || 'Not provided'}</td>
           </tr>
           <tr style="background-color: #000000ff;">
-            <td style="border: 1px solid #000000ff; padding: 8px; font-weight: bold;">CV Text:</td>
+            <td style="border: 1px solid #000000ff; padding: 8px; font-weight: bold;">Digər məlumatlar:</td>
             <td style="border: 1px solid #000000ff; padding: 8px;">${cvText || 'Not provided'}</td>
           </tr>
           <tr>
-            <td style="border: 1px solid #000000ff; padding: 8px; font-weight: bold;">Profession:</td>
+            <td style="border: 1px solid #000000ff; padding: 8px; font-weight: bold;">Vakansiya:</td>
             <td style="border: 1px solid #000000ff; padding: 8px;">${profession || 'Not applicable'}</td>
           </tr>
           <tr style="background-color: #000000ff;">
-            <td style="border: 1px solid #000000ff; padding: 8px; font-weight: bold;">Application Date:</td>
+            <td style="border: 1px solid #000000ff; padding: 8px; font-weight: bold;">Tarix:</td>
             <td style="border: 1px solid #000000ff; padding: 8px;">${new Date().toLocaleString()}</td>
           </tr>
         </table>

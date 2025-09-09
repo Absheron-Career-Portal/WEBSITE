@@ -4,6 +4,7 @@ import ContactItem from '../../elements/sections/contact';
 import CareersItem from '../../elements/sections/careers';
 import ActivitiesItem from '../../elements/sections/activities';
 import AboutItem from '../../elements/about';
+import LMS from '../../elements/sections/lms';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -45,6 +46,7 @@ const Navbar = () => {
                         <div className='Nav-End-items' onClick={() => scrollToSection('activities')}>
                             <ActivitiesItem />
                         </div>
+                        <LMS />
                         <ContactItem />
                     </span>
                 </div>

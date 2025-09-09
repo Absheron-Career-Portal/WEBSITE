@@ -21,6 +21,12 @@
 
 }
 
+.items a {
+    text-decoration: none;
+    color: var(--black-color)
+
+}
+
 .items:hover {
     color: var(--primary-color);
 

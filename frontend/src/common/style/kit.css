@@ -21,6 +21,50 @@
   --focused-shadow: 0px 2px 2px 0px var(--opacity-007-black-color);
 }
 
+.Main-Button-Unfocused a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.Main-Button-Unfocused:hover a {
+  color: var(--white-color);
+  text-decoration: none;
+}
+
+.Main-Button-Unfocused {
+    position: relative;
+  background: none;
+  color: var(--primary-color);
+  height: 38px;
+  width: fit-content;
+  padding-inline: calc(var(--safe-place) * 1);
+  border-radius: var(--secondary-radius);
+    border: 1px solid var(--light-gray-color);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-14px);
+  font-weight: 500;
+  padding-bottom: 3px;
+  margin-top: 3px;
+  animation: fade-in-down 0.7s ease 1;
+  -webkit-animation: fade-in-down 0.7s ease 1;
+  text-decoration: none;
+  -webkit-border-radius: var(--secondary-radius);
+  -moz-border-radius: var(--secondary-radius);
+  -ms-border-radius: var(--secondary-radius);
+  -o-border-radius: var(--secondary-radius);
+  margin-right: calc(var(--inner-safe-place) * -1);
+}
+
+.Main-Button-Unfocused:hover {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+   animation: fade-in-down 0.7s ease 1;
+  -webkit-animation: fade-in-down 0.7s ease 1;
+}
+
 .Main-Button {
   position: relative;
   background: linear-gradient(to bottom, var(--low-shade-light-blue-color), var(--high-shade-light-blue-color));
@@ -47,6 +91,16 @@
   -o-border-radius: var(--secondary-radius);
 }
 
+.Cards-grid:hover.Main-Button-Style {
+  position: relative;
+  background: linear-gradient(to bottom, var(--low-shade-light-blue-color), var(--high-shade-light-blue-color));
+  color: var(--primary-color);
+  border: none;
+  z-index: 1;
+  box-shadow: var(--unfocus-shadow);
+  text-decoration: none;
+}
+
 .Classic-Button a {
   display: flex;
   align-items: center;
@@ -60,7 +114,7 @@
 
 .Classic-Button {
   position: relative;
-  background-color: var(--white-color);
+  background-color: none;
   color: var(--primary-color);
   height: 38px;
   width: calc(100% - (var(--inner-safe-place)*2));

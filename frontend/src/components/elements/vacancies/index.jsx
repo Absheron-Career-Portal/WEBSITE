@@ -7,6 +7,7 @@ import SortColumnImage from '../../../assets/svg/slider.horizontal.below.rectang
 import SortRowImage from '../../../assets/svg/slider.horizontal.below.square.fill.and.square.svg';
 import ClockImage from '../../../assets/svg/clock.arrow.circlepath.svg';
 import CloseImage from '../../../assets/svg/close.bubble.svg';
+import EyeImage from '../../../assets/svg/eye.svg';
 
 
 const Vacancies = () => {
@@ -31,17 +32,18 @@ const Vacancies = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const originalArrayData = [
-        { id: 0, image: ArrayData1Img, title: 'Abşeron Logistika Mərkəzi Ümumi CV bazasına müraciət', descriptionKey: 'ResumeDatabase' },
-        { id: 1, image: ArrayData1Img, title: 'IT Helpdesk (Texnik)', expireDateImage: ArrayData0Svg, expireDate: 'Sentyabr 4, 2026', dateImage: ArrayData1Svg, date: 'Aprel 18, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-inzibatilesdirme-uzre-kicik-mutexessis-43581?isLocal=true', descriptionKey: 'ITHelpdesk' },
-        { id: 2, image: ArrayData1Img, title: 'Kran operatoru', expireDateImage: ArrayData0Svg, expireDate: 'Sentyabr 4, 2026', dateImage: ArrayData1Svg, date: 'April 18, 2023', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://www.jobsearch.az/vacancies/abseron-logistika-merkezi-marketinq-ve-ictimaiyyetle-elaqeler-uzre-aparici-mutexessis-116325', descriptionKey: 'CraneOperator' },
-        { id: 3, image: ArrayData1Img, title: 'Sistem əməliyyatlarına nəzarət üzrə mütəxəssis', expireDateImage: ArrayData1Svg, expireDate: 'Sentyabr 4, 2026', dateImage: ArrayData1Svg, date: 'Mart 18, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-hesabatliq-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'ControlSpecialist' },
-        { id: 4, image: ArrayData1Img, title: 'Tır sürücüsü', expireDateImage: ArrayData0Svg, expireDate: 'Sentyabr 4, 2026', dateImage: ArrayData1Svg, date: 'May 18, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-maliyyə-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'TruckDriver' },
-        { id: 5, image: ArrayData1Img, title: 'Analitik təhlil üzrə mütəxəssis', expireDateImage: ArrayData0Svg, expireDate: 'Sentyabr 4, 2026', dateImage: ArrayData1Svg, date: 'April 8, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-it-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'AnalysisSpecialist' },
-        { id: 6, image: ArrayData1Img, title: 'Avtoyükləyici (avtokar, elektrokar) ', expireDateImage: ArrayData0Svg, expireDate: 'Sentyabr 4, 2026', dateImage: ArrayData1Svg, date: 'Yanvar 28, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-huquqshunas-26775?isLocal=true', descriptionKey: 'CarCharger' },
-        { id: 7, image: ArrayData1Img, title: 'Beynəlxalq daşıma əməliyyatları üzrə mütəxəssis', expireDateImage: ArrayData0Svg, expireDate: 'Sentyabr 4, 2026', dateImage: ArrayData1Svg, date: 'April 18, 2025', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-kadrlarr-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'TransportSpecialist' },
-        { id: 8, image: ArrayData1Img, title: 'Elektrik montyoru', dateImage: ArrayData1Svg, expireDateImage: ArrayData0Svg, date: 'Aprel 12, 2025', expireDate: 'Sentyabr 4, 2026', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-is-tklif-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'Electrician' },
-        { id: 9, image: ArrayData1Img, title: 'Hesabatlıq üzrə mütəxəssis', dateImage: ArrayData1Svg, expireDateImage: ArrayData0Svg, date: 'Aprel 12, 2025', expireDate: 'Sentyabr 4, 2026', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-is-tklif-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'ReportingSpecialist' },
-        { id: 10, image: ArrayData1Img, title: 'İnzibatiləşdirmə üzrə kiçik mütəxəssis', dateImage: ArrayData1Svg, expireDateImage: ArrayData0Svg, date: 'Aprel 12, 2025', expireDate: 'Sentyabr 4, 2026', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-is-tklif-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'JRAdministrativeSpecialist' },
+        { id: 0,  image: ArrayData1Img,  title: 'Abşeron Logistika Mərkəzi Ümumi CV bazasına müraciət', descriptionKey: 'ResumeDatabase' },
+        { id: 1, EyeImage:EyeImage, view: '480', image: ArrayData1Img, title: 'IT Helpdesk (Texnik)', expireDateImage: ArrayData0Svg, expireDate: 'Oktyabr 1, 2026', dateImage: ArrayData1Svg, date: 'Sentyabr 1, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-inzibatilesdirme-uzre-kicik-mutexessis-43581?isLocal=true', descriptionKey: 'ITHelpdesk' },
+        { id: 2, EyeImage:EyeImage, view: '530', image: ArrayData1Img, title: 'Kran operatoru', expireDateImage: ArrayData0Svg, expireDate: 'Oktyabr 1, 2026', dateImage: ArrayData1Svg, date: 'Sentyabr 1, 2023', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://www.jobsearch.az/vacancies/abseron-logistika-merkezi-marketinq-ve-ictimaiyyetle-elaqeler-uzre-aparici-mutexessis-116325', descriptionKey: 'CraneOperator' },
+        { id: 3, EyeImage:EyeImage, view: '390', image: ArrayData1Img, title: 'Sistem əməliyyatlarına nəzarət üzrə mütəxəssis', expireDateImage: ArrayData1Svg, expireDate: 'Oktyabr 1, 2026', dateImage: ArrayData1Svg, date: 'Sentyabr 1, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-hesabatliq-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'ControlSpecialist' },
+        { id: 4, EyeImage:EyeImage, view: '296', image: ArrayData1Img, title: 'Tır sürücüsü', expireDateImage: ArrayData0Svg, expireDate: 'Oktyabr 1, 2026', dateImage: ArrayData1Svg, date: 'Sentyabr 1, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-maliyyə-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'TruckDriver' },
+        { id: 5, EyeImage:EyeImage, view: '489', image: ArrayData1Img, title: 'Analitik təhlil üzrə mütəxəssis', expireDateImage: ArrayData0Svg, expireDate: 'Oktyabr 1, 2026', dateImage: ArrayData1Svg, date: 'Sentyabr 1, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-it-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'AnalysisSpecialist' },
+        { id: 6, EyeImage:EyeImage, view: '449', image: ArrayData1Img, title: 'Avtoyükləyici (avtokar, elektrokar) ', expireDateImage: ArrayData0Svg, expireDate: 'Oktyabr 1, 2026', dateImage: ArrayData1Svg, date: 'Sentyabr 1, 2024', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-huquqshunas-26775?isLocal=true', descriptionKey: 'CarCharger' },
+        { id: 7, EyeImage:EyeImage, view: '308', image: ArrayData1Img, title: 'Beynəlxalq daşıma əməliyyatları üzrə mütəxəssis', expireDateImage: ArrayData0Svg, expireDate: 'Oktyabr 1, 2026', dateImage: ArrayData1Svg, date: 'Sentyabr 1, 2025', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-kadrlarr-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'TransportSpecialist' },
+        { id: 8, EyeImage:EyeImage, view: '487', image: ArrayData1Img, title: 'Elektrik montyoru', dateImage: ArrayData1Svg, expireDateImage: ArrayData0Svg, date: 'Sentyabr 1, 2025', expireDate: 'Oktyabr 1, 2026', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-is-tklif-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'Electrician' },
+        { id: 9, EyeImage:EyeImage, view: '286', image: ArrayData1Img, title: 'Hesabatlıq üzrə mütəxəssis', dateImage: ArrayData1Svg, expireDateImage: ArrayData0Svg, date: 'Sentyabr 1, 2025', expireDate: 'Oktyabr 1, 2026', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-is-tklif-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'ReportingSpecialist' },
+        { id: 10, EyeImage:EyeImage, view: '374', image: ArrayData1Img, title: 'İnzibatiləşdirmə üzrə kiçik mütəxəssis', dateImage: ArrayData1Svg, expireDateImage: ArrayData0Svg, date: 'Sentyabr 1, 2025', expireDate: 'Oktyabr 1, 2026', locationImage: ArrayData2Svg, location: 'Baku, Azerbaijan', link: 'https://jobs.glorri.az/vacancies/absheronport/absheronport-is-tklif-uzre-mutexessis-26775?isLocal=true', descriptionKey: 'JRAdministrativeSpecialist' }
+
     ];
 
     useEffect(() => {
@@ -250,7 +252,6 @@ const Vacancies = () => {
             formDataToSend.append('mobile', formData.mobile);
             formDataToSend.append('email', formData.email);
 
-            // For id:0, include the text-based CV if provided
             if (selectedJob.id === 0 && formData.cvText) {
                 formDataToSend.append('cvText', formData.cvText);
             }
@@ -318,7 +319,7 @@ const Vacancies = () => {
                     {displayedData.map((item) => {
                         const expired = isJobExpired(item);
                         return (
-                            <div className={`Cards-grid Main-Card-grid ${isColumnLayout ? 'column-Cards-grid' : 'row-Cards-grid'} animated-${item.id + 1} ${expired ? 'expired-job' : ''}`}
+                            <div className={`Cards-grid Main-Button-Style Main-Card-grid ${isColumnLayout ? 'column-Cards-grid' : 'row-Cards-grid'} animated-${item.id + 1} ${expired ? 'expired-job' : ''}`}
                                 key={`${item.id}-${animationKey}`} >
                                 <div className={`Cards-Item-grid ${expired ? 'expired' : ''}`}>
                                     <span className='Cards-Item-Folder'>
@@ -333,6 +334,12 @@ const Vacancies = () => {
                                             <div className="Cards-Item-Bio">
                                                 <img src={item.locationImage} className='No-Select' alt="Location" />
                                                 <p>{item.location}</p>
+                                            </div>
+                                        )}
+                                        {item.location && (
+                                            <div className="Cards-Item-Bio">
+                                                <img src={item.EyeImage} className='No-Select' alt="Location" />
+                                                <p>{item.view}</p>
                                             </div>
                                         )}
 
@@ -412,16 +419,16 @@ const Vacancies = () => {
                                             required
                                         />
                                     </div>
-                   <div className="form-group">
-                                                <input
-                                                    type="tel"
-                                                    placeholder='Mobil nömrə (+994 00 000 00 00)'
-                                                    id="mobile"
-                                                    name="mobile"
-                                                    value={formData.mobile}
-                                                    onChange={handleInputChange}
-                                                />
-                                            </div>
+                                    <div className="form-group">
+                                        <input
+                                            type="tel"
+                                            placeholder='Mobil nömrə (+994 00 000 00 00)'
+                                            id="mobile"
+                                            name="mobile"
+                                            value={formData.mobile}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
 
                                     {selectedJob.id === 0 ? (
                                         <>
@@ -436,7 +443,7 @@ const Vacancies = () => {
                                                     required
                                                 />
                                             </div>
-                         
+
                                         </>
                                     ) : null}
 
@@ -477,7 +484,7 @@ const Vacancies = () => {
                                                 value={formData.cvText}
                                                 onChange={handleInputChange}
                                                 rows={5}
-                                         
+
                                             />
                                         </div>
 
