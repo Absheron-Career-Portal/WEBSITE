@@ -8,11 +8,13 @@ import Activity from '../../elements/activity'
 import Info from '../../elements/info'
 import Admission from '../../elements/admission'
 import Footer from '../../layout/footer'
+import Values from '../../elements/values'
 
 const Home = () => {
     return (
         <div className="Layout-Group">
             <Header />
+            <Values/>
             <div id="about">
                 <Info />
             </div>

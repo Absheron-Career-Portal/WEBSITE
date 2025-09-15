@@ -92,6 +92,12 @@ import ArrayDataBDU2Img from '../../../assets/image/social/bdu/2.jpg';
 import ArrayDataBDU3Img from '../../../assets/image/social/bdu/3.jpg';
 import ArrayDataBDU4Img from '../../../assets/image/social/bdu/4.jpg';
 
+import ArrayDataCAR0Img from '../../../assets/image/social/car/0.jpg';
+import ArrayDataCAR1Img from '../../../assets/image/social/car/1.jpg';
+import ArrayDataCAR2Img from '../../../assets/image/social/car/2.jpg';
+import ArrayDataCAR3Img from '../../../assets/image/social/car/3.jpg';
+import ArrayDataCAR4Img from '../../../assets/image/social/car/4.jpg';
+
 
 const Activity = () => {
     const ArrayData = [
@@ -263,6 +269,19 @@ const Activity = () => {
     description: 'Abşeron Logistika Mərkəzində Azərbaycan Texniki Universitetinin Təlim-Tədris Mərkəzi...',
     additionalImages: [ArrayDataAZTU1Img, ArrayDataAZTU2Img, ArrayDataAZTU3Img],
     extendedDescription: 'Abşeron Logistika Mərkəzində Azərbaycan Texniki Universitetinin Təlim-Tədris Mərkəzi yaradılıb. Bununla bağlı fevralın 8-də Abşeron Logistika Mərkəzinin İdarə Heyətinin sədri Ziya Ağayev və AzTU-nun rektoru Vilayət Vəliyevin rəhbərlik etdiyi nümayəndə heyətləri arasında görüş keçirilib. Görüş zamanı kadr hazırlığı, elmi-texniki tədqiqat məsələləri müzakirə olunub və bununla bağlı işçi qrupu yaradılıb. Abşeron Logistika Mərkəzi ilə əməkdaşlıqda maraqlı olduğunu bildirən Vilayət Vəliyev qarşılıqlı nəzəri və praktiki dərslərin, həmçinin seminarların keçirilməsi ilə bağlı təkliflər səsləndirib. Abşeron Logistika Mərkəzinin İdarə Heyətinin sədri Ziya Ağayev Mərkəzin mütəxəssislərinin universitetin tələbələrinə seminarlar və praktiki dərslərin tədrisi ilə bağlı təklifi müsbət qarşıladığını bildirib.  Mərkəzimiz tələbələrin akademik təhsili zamanı əyani iş təcrübəsi qazanmasını, bununla da müasir tələblərə cavab verəcək kadr potensialının inkişafına töhfə vermək təşəbbüslərini daim dəstəkləyir.'
+  
+},
+  {
+    id: 14,
+    image: ArrayDataCAR0Img,
+    linkImage: ArrayData2Svg,
+    imageTotal: '3',
+    dateImage: ArrayData1Svg,
+    date: '24 İyun, 2025',
+    title: 'Mərkəz əməkdaşlarımız kartinqdə',
+    description: 'Abşeron Logistika Mərkəzində əməkdaşların asudə vaxtının səmərəli təşkili üçün bir qrup...',
+    additionalImages: [ArrayDataCAR1Img, ArrayDataCAR2Img, ArrayDataCAR3Img, ArrayDataCAR4Img],
+    extendedDescription: 'Abşeron Logistika Mərkəzində əməkdaşların asudə vaxtının səmərəli təşkili üçün bir qrup əməkdaşın iştrak ilə kartinq yarışması ilə təşkil edilmişdir. Əməkdaşlar yarıma ilə bərabər əyləncəli vaxt keçirmişdir.'
   
 }
     ];
