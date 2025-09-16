@@ -47,7 +47,6 @@ const Info = () => {
         handleResize();
         window.addEventListener('resize', handleResize);
 
-        // Add mousemove listener for custom cursor
         const handleMouseMove = (e) => {
             if (cursorRef.current && isVideoHovered) {
                 cursorRef.current.style.left = `${e.clientX}px`;
@@ -73,11 +72,9 @@ const Info = () => {
     }, [currentIndex, isHovered, itemsPerPage, shouldHideNav]);
 
     useEffect(() => {
-        // Handle cursor animation
         if (isClickAnimating && cursorRef.current) {
             cursorRef.current.classList.add('animate');
             
-            // Remove animation class after animation completes
             const timeout = setTimeout(() => {
                 if (cursorRef.current) {
                     cursorRef.current.classList.remove('animate');
@@ -103,7 +100,6 @@ const Info = () => {
 
     const toggleVideoPlayback = () => {
         if (videoRef.current) {
-            // Trigger the click animation
             setIsClickAnimating(true);
             
             if (videoRef.current.paused) {
@@ -139,7 +135,6 @@ const Info = () => {
         <div className="section-column" onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}>
 
-            {/* Custom cursor element */}
             <div 
                 ref={cursorRef}
                 className="custom-cursor"
@@ -205,7 +200,6 @@ const Info = () => {
                 </div>
             </div>
             
-            {/* Add CSS for the custom cursor and animation */}
             <style jsx>{`
                 .custom-cursor {
                     position: fixed;
