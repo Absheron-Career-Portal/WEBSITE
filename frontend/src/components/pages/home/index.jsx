@@ -9,20 +9,25 @@ import Info from '../../elements/info'
 import Admission from '../../elements/admission'
 import Footer from '../../layout/footer'
 import Values from '../../elements/values'
+import HeaderVideoComponent from '../../elements/headerVideo'
 
 const Home = () => {
     return (
         <div className="Layout-Group">
-            <Header />
-            <Values/>
+            {/* <Header /> */}
+            <HeaderVideoComponent />
+            <br />
             <div id="about">
                 <Info />
             </div>
+            {/* <Values/> */}
+
             <Admission />
-            <Advantages />
             <div id="careers">
                 <Vacancies />
             </div>
+            <Advantages />
+
             <div id="activities">
                 <Activity />
             </div>
