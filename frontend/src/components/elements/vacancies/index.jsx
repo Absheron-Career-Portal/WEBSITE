@@ -7,9 +7,11 @@ import ArrayData3Svg from '../../../assets/svg/suitcase.svg';
 import SortColumnImage from '../../../assets/svg/slider.horizontal.below.rectangle.svg';
 import SortRowImage from '../../../assets/svg/slider.horizontal.below.square.fill.and.square.svg';
 import ClockImage from '../../../assets/svg/clock.arrow.circlepath.svg';
+import AZImage from '../../../assets/svg/AZ.indent.svg';
 import CloseImage from '../../../assets/svg/close.bubble.svg';
 import EyeImage from '../../../assets/svg/eye.svg';
 import SearchImage from '../../../assets/svg/magnifyingglass.svg';
+import LoadingCareers from '../snackbar/loading';
 
 const Vacancies = () => {
     const [isColumnLayout, setIsColumnLayout] = useState(true);
@@ -26,7 +28,8 @@ const Vacancies = () => {
         linkedin: ''
     });
 
-    const [isSortedByDate, setIsSortedByDate] = useState(false);
+    const [isSortedByDate, setIsSortedByDate] = useState(false); // Default false - not active
+    const [isSortedByAtoZ, setIsSortedByAtoZ] = useState(false);
     const [displayedData, setDisplayedData] = useState([]);
     const [showAll, setShowAll] = useState(false);
     const [itemsToShow, setItemsToShow] = useState(10);
@@ -35,7 +38,7 @@ const Vacancies = () => {
     const [originalArrayData, setOriginalArrayData] = useState([]);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [isCompactSortGroup, setIsCompactSortGroup] = useState(false); // NEW STATE FOR WIDTH TOGGLE
+    const [isCompactSortGroup, setIsCompactSortGroup] = useState(false);
 
     // Fetch career data from GitHub
     useEffect(() => {
@@ -43,7 +46,7 @@ const Vacancies = () => {
             try {
                 const response = await fetch('https://raw.githubusercontent.com/Absheron-Career-Portal/STORAGE/refs/heads/main/public/data/career.json');
                 const data = await response.json();
-                
+
                 // Transform the data to match your component's structure
                 const transformedData = data.map(item => ({
                     id: item.id,
@@ -64,7 +67,10 @@ const Vacancies = () => {
                 }));
 
                 setOriginalArrayData(transformedData);
-                setDisplayedData(transformedData.slice(0, itemsToShow));
+                
+                // Sort by date (newest to oldest) by default without activating the button
+                const sortedData = sortByDateNewestToOldest(transformedData);
+                setDisplayedData(sortedData.slice(0, itemsToShow));
             } catch (error) {
                 console.error('Error fetching career data:', error);
                 setIsLoading(false);
@@ -74,7 +80,81 @@ const Vacancies = () => {
         fetchCareerData();
     }, []);
 
-    // Load job descriptions
+    // Sort function for newest to oldest (DEFAULT)
+    const sortByDateNewestToOldest = (data) => {
+        const firstItem = data.find(item => item.id === 0) || data[0];
+        const otherItems = data.filter(item => item.id !== 0);
+
+        const monthNames = {
+            'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
+            'Iyul': 7, 'Avqust': 8, 'Sentyabr': 9, 'Oktyabr': 10, 'Noyabr': 11, 'Dekabr': 12,
+            'January': 1, 'February': 2, 'March': 3, 'April': 4, 'Mays': 5, 'June': 6,
+            'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12
+        };
+
+        const sortedItems = [...otherItems].sort((a, b) => {
+            if (!a.date || !b.date) return 0;
+
+            const parseDate = (dateStr) => {
+                const parts = dateStr.replace(',', '').split(' ');
+                if (parts.length < 3) return new Date();
+
+                const [day, monthStr, year] = parts;
+                const month = monthNames[monthStr];
+                return new Date(year, month - 1, day);
+            };
+
+            return parseDate(b.date) - parseDate(a.date); // Newest to oldest
+        });
+
+        return [firstItem, ...sortedItems];
+    };
+
+    // Sort function for oldest to newest (WHEN BUTTON IS CLICKED)
+    const sortByDateOldestToNewest = (data) => {
+        const firstItem = data.find(item => item.id === 0) || data[0];
+        const otherItems = data.filter(item => item.id !== 0);
+
+        const monthNames = {
+            'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
+            'Iyul': 7, 'Avqust': 8, 'Sentyabr': 9, 'Oktyabr': 10, 'Noyabr': 11, 'Dekabr': 12,
+            'January': 1, 'February': 2, 'March': 3, 'April': 4, 'Mays': 5, 'June': 6,
+            'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12
+        };
+
+        const sortedItems = [...otherItems].sort((a, b) => {
+            if (!a.date || !b.date) return 0;
+
+            const parseDate = (dateStr) => {
+                const parts = dateStr.replace(',', '').split(' ');
+                if (parts.length < 3) return new Date();
+
+                const [day, monthStr, year] = parts;
+                const month = monthNames[monthStr];
+                return new Date(year, month - 1, day);
+            };
+
+            return parseDate(a.date) - parseDate(b.date); // Oldest to newest
+        });
+
+        return [firstItem, ...sortedItems];
+    };
+
+    // Sort function for A to Z
+    const sortByAtoZ = (data) => {
+        const firstItem = data.find(item => item.id === 0) || data[0];
+        const otherItems = data.filter(item => item.id !== 0);
+
+        const sortedItems = [...otherItems].sort((a, b) => {
+            const titleA = a.title || '';
+            const titleB = b.title || '';
+            return titleA.localeCompare(titleB);
+        });
+
+        return [firstItem, ...sortedItems];
+    };
+
+    // Load ALL job descriptions from GitHub API
     useEffect(() => {
         const loadJobDescriptions = async () => {
             if (originalArrayData.length === 0) return;
@@ -84,26 +164,9 @@ const Vacancies = () => {
 
                 for (const job of originalArrayData) {
                     try {
-                        // Check job range to decide local or remote source
-                        if (job.id >= 0 && job.id <= 10) {
-                            // ✅ LOCAL LOAD (for 0–10)
-                            if (job.descriptionKey) {
-                                const response = await import(`../../../assets/docs/${job.descriptionKey}.txt`);
-                                const text = await fetch(response.default).then(res => res.text());
-                                descriptions[job.id] = text;
-                            } else {
-                                descriptions[job.id] = "Description not available.";
-                            }
-                        } else {
-                            //  REMOTE LOAD (for 11, 12, 13, etc.)
-                            let descriptionPath = job.descriptionKey;
-
-                            // Handle specific edge cases for 11–13
-                            if (job.id === 11) descriptionPath = 'logistikameneceri';
-                            if (job.id === 12) descriptionPath = 'logistikasatismeneceri';
-                            if (job.id === 13) descriptionPath = 'juyj';
-
-                            const fileUrl = `https://raw.githubusercontent.com/Absheron-Career-Portal/STORAGE/refs/heads/main/public/docs/${descriptionPath}.txt`;
+                        // ALL descriptions come from remote source
+                        if (job.descriptionKey) {
+                            const fileUrl = `https://raw.githubusercontent.com/Absheron-Career-Portal/STORAGE/refs/heads/main/public/docs/${job.descriptionKey}.txt`;
                             const response = await fetch(fileUrl);
 
                             if (response.ok) {
@@ -112,6 +175,8 @@ const Vacancies = () => {
                             } else {
                                 descriptions[job.id] = "Təsvir tapılmadı və ya mövcud deyil.";
                             }
+                        } else {
+                            descriptions[job.id] = "Description not available.";
                         }
                     } catch (error) {
                         console.error(`Error loading description for job ${job.id}:`, error);
@@ -135,35 +200,19 @@ const Vacancies = () => {
         if (searchTerm.trim() === '') {
             // If search is empty, show normal data
             if (isSortedByDate) {
-                const firstItem = originalArrayData.find(item => item.id === 0) || originalArrayData[0];
-                const otherItems = originalArrayData.filter(item => item.id !== 0);
-                
-                const monthNames = {
-                    'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
-                    'Iyul': 7, 'Avqust': 8, 'Sentyabr': 9, 'Oktyabr': 10, 'Noyabr': 11, 'Dekabr': 12,
-                    'January': 1, 'February': 2, 'March': 3, 'April': 4, 'Mays': 5, 'June': 6,
-                    'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12
-                };
-
-                const sortedItems = [...otherItems].sort((a, b) => {
-                    if (!a.date || !b.date) return 0;
-
-                    const parseDate = (dateStr) => {
-                        const parts = dateStr.replace(',', '').split(' ');
-                        if (parts.length < 3) return new Date();
-                        
-                        const [day, monthStr, year] = parts;
-                        const month = monthNames[monthStr];
-                        return new Date(year, month - 1, day);
-                    };
-
-                    return parseDate(b.date) - parseDate(a.date);
-                });
-
-                const limitedSortedItems = showAll ? sortedItems : sortedItems.slice(0, itemsToShow - 1);
-                setDisplayedData([firstItem, ...limitedSortedItems]);
+                // When date button is active, show oldest to newest
+                const sortedData = sortByDateOldestToNewest(originalArrayData);
+                const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+                setDisplayedData(limitedData);
+            } else if (isSortedByAtoZ) {
+                const sortedData = sortByAtoZ(originalArrayData);
+                const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+                setDisplayedData(limitedData);
             } else {
-                setDisplayedData(showAll ? originalArrayData : originalArrayData.slice(0, itemsToShow));
+                // Default: newest to oldest (button not active)
+                const sortedData = sortByDateNewestToOldest(originalArrayData);
+                const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+                setDisplayedData(limitedData);
             }
         } else {
             // If search term exists, filter data with proper null checking
@@ -172,15 +221,27 @@ const Vacancies = () => {
                 const location = item.location || '';
                 const type = item.type || '';
                 const searchLower = searchTerm.toLowerCase();
-                
+
                 return title.toLowerCase().includes(searchLower) ||
-                       location.toLowerCase().includes(searchLower) ||
-                       type.toLowerCase().includes(searchLower);
+                    location.toLowerCase().includes(searchLower) ||
+                    type.toLowerCase().includes(searchLower);
             });
-            setDisplayedData(filteredData);
+            
+            // Apply current sorting to filtered results
+            let sortedFilteredData = filteredData;
+            if (isSortedByDate) {
+                sortedFilteredData = sortByDateOldestToNewest(filteredData);
+            } else if (isSortedByAtoZ) {
+                sortedFilteredData = sortByAtoZ(filteredData);
+            } else {
+                // Default: newest to oldest
+                sortedFilteredData = sortByDateNewestToOldest(filteredData);
+            }
+            
+            setDisplayedData(sortedFilteredData);
         }
         setAnimationKey(prevKey => prevKey + 1);
-    }, [searchTerm, originalArrayData, isSortedByDate, showAll, itemsToShow]);
+    }, [searchTerm, originalArrayData, isSortedByDate, isSortedByAtoZ, showAll, itemsToShow]);
 
     const isJobExpired = (job) => {
         if (!job.expireDate) return false;
@@ -195,7 +256,7 @@ const Vacancies = () => {
         const parseDate = (dateStr) => {
             const parts = dateStr.replace(',', '').split(' ');
             if (parts.length < 3) return new Date();
-            
+
             const [day, monthStr, year] = parts;
             const month = monthNames[monthStr];
             return new Date(year, month - 1, day);
@@ -219,58 +280,65 @@ const Vacancies = () => {
         };
     }, [showPopup]);
 
-    // KEEP the existing layout toggle function
     const toggleLayout = () => {
         setIsColumnLayout(!isColumnLayout);
         setAnimationKey(prevKey => prevKey + 1);
     };
 
-    // ADD new function for width toggle
     const toggleSortGroupWidth = () => {
         setIsCompactSortGroup(!isCompactSortGroup);
     };
 
-    // MODIFIED: Now the first sort button does BOTH layout toggle AND width toggle
     const handleFirstSortClick = () => {
-        toggleLayout(); // Keep the original layout toggle
-        toggleSortGroupWidth(); // Add the new width toggle
+        toggleLayout();
+        toggleSortGroupWidth();
     };
 
     const toggleSortByDate = () => {
         if (originalArrayData.length === 0) return;
 
+        // Reset A-Z sorting when date sorting is activated
+        if (isSortedByAtoZ) {
+            setIsSortedByAtoZ(false);
+        }
+
         if (isSortedByDate) {
-            setDisplayedData(originalArrayData.slice(0, itemsToShow));
+            // Currently showing oldest to newest, turn off sorting (back to default: newest to oldest)
+            const sortedData = sortByDateNewestToOldest(originalArrayData);
+            const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+            setDisplayedData(limitedData);
             setIsSortedByDate(false);
         } else {
-            const firstItem = originalArrayData.find(item => item.id === 0) || originalArrayData[0];
-            const otherItems = originalArrayData.filter(item => item.id !== 0);
-
-            const monthNames = {
-                'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
-                'Iyul': 7, 'Avqust': 8, 'Sentyabr': 9, 'Oktyabr': 10, 'Noyabr': 11, 'Dekabr': 12,
-                'January': 1, 'February': 2, 'March': 3, 'April': 4, 'Mays': 5, 'June': 6,
-                'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12
-            };
-
-            const sortedItems = [...otherItems].sort((a, b) => {
-                if (!a.date || !b.date) return 0;
-
-                const parseDate = (dateStr) => {
-                    const parts = dateStr.replace(',', '').split(' ');
-                    if (parts.length < 3) return new Date();
-                    
-                    const [day, monthStr, year] = parts;
-                    const month = monthNames[monthStr];
-                    return new Date(year, month - 1, day);
-                };
-
-                return parseDate(b.date) - parseDate(a.date);
-            });
-
-            const limitedSortedItems = showAll ? sortedItems : sortedItems.slice(0, itemsToShow - 1);
-            setDisplayedData([firstItem, ...limitedSortedItems]);
+            // Currently showing default (newest to oldest), switch to oldest to newest
+            const sortedData = sortByDateOldestToNewest(originalArrayData);
+            const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+            setDisplayedData(limitedData);
             setIsSortedByDate(true);
+        }
+        setAnimationKey(prevKey => prevKey + 1);
+    };
+
+    // ADDED: A-Z sorting function
+    const toggleSortByAtoZ = () => {
+        if (originalArrayData.length === 0) return;
+
+        // Reset date sorting when A-Z sorting is activated
+        if (isSortedByDate) {
+            setIsSortedByDate(false);
+        }
+
+        if (isSortedByAtoZ) {
+            // Turn off A-Z sorting (back to default: newest to oldest)
+            const sortedData = sortByDateNewestToOldest(originalArrayData);
+            const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+            setDisplayedData(limitedData);
+            setIsSortedByAtoZ(false);
+        } else {
+            // Activate A-Z sorting
+            const sortedData = sortByAtoZ(originalArrayData);
+            const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+            setDisplayedData(limitedData);
+            setIsSortedByAtoZ(true);
         }
         setAnimationKey(prevKey => prevKey + 1);
     };
@@ -295,59 +363,31 @@ const Vacancies = () => {
         if (originalArrayData.length === 0) return;
 
         if (showAll) {
-            setDisplayedData(isSortedByDate ?
-                [originalArrayData.find(item => item.id === 0) || originalArrayData[0], 
-                 ...originalArrayData.filter(item => item.id !== 0)
-                    .sort((a, b) => {
-                        if (!isSortedByDate) return 0;
-
-                        const monthNames = {
-                            'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
-                            'Iyul': 7, 'Avqust': 8, 'Sentyabr': 9, 'Oktyabr': 10, 'Noyabr': 11, 'Dekabr': 12,
-                            'January': 1, 'February': 2, 'March': 3, 'April': 4, 'Mays': 5, 'June': 6,
-                            'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12
-                        };
-
-                        const parseDate = (dateStr) => {
-                            const parts = dateStr.replace(',', '').split(' ');
-                            if (parts.length < 3) return new Date();
-                            
-                            const [day, monthStr, year] = parts;
-                            const month = monthNames[monthStr];
-                            return new Date(year, month - 1, day);
-                        };
-
-                        return parseDate(b.date) - parseDate(a.date);
-                    }).slice(0, itemsToShow - 1)] :
-                originalArrayData.slice(0, itemsToShow)
-            );
+            // Show less
+            if (isSortedByDate) {
+                const sortedData = sortByDateOldestToNewest(originalArrayData);
+                setDisplayedData(sortedData.slice(0, itemsToShow));
+            } else if (isSortedByAtoZ) {
+                const sortedData = sortByAtoZ(originalArrayData);
+                setDisplayedData(sortedData.slice(0, itemsToShow));
+            } else {
+                // Default: newest to oldest
+                const sortedData = sortByDateNewestToOldest(originalArrayData);
+                setDisplayedData(sortedData.slice(0, itemsToShow));
+            }
         } else {
-            setDisplayedData(isSortedByDate ?
-                [originalArrayData.find(item => item.id === 0) || originalArrayData[0], 
-                 ...originalArrayData.filter(item => item.id !== 0)
-                    .sort((a, b) => {
-                        if (!isSortedByDate) return 0;
-
-                        const monthNames = {
-                            'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
-                            'Iyul': 7, 'Avqust': 8, 'Sentyabr': 9, 'Oktyabr': 10, 'Noyabr': 11, 'Dekabr': 12,
-                            'January': 1, 'February': 2, 'March': 3, 'April': 4, 'Mays': 5, 'June': 6,
-                            'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12
-                        };
-
-                        const parseDate = (dateStr) => {
-                            const parts = dateStr.replace(',', '').split(' ');
-                            if (parts.length < 3) return new Date();
-                            
-                            const [day, monthStr, year] = parts;
-                            const month = monthNames[monthStr];
-                            return new Date(year, month - 1, day);
-                        };
-
-                        return parseDate(b.date) - parseDate(a.date);
-                    })] :
-                originalArrayData
-            );
+            // Show all
+            if (isSortedByDate) {
+                const sortedData = sortByDateOldestToNewest(originalArrayData);
+                setDisplayedData(sortedData);
+            } else if (isSortedByAtoZ) {
+                const sortedData = sortByAtoZ(originalArrayData);
+                setDisplayedData(sortedData);
+            } else {
+                // Default: newest to oldest
+                const sortedData = sortByDateNewestToOldest(originalArrayData);
+                setDisplayedData(sortedData);
+            }
         }
         setShowAll(!showAll);
         setAnimationKey(prevKey => prevKey + 1);
@@ -430,17 +470,15 @@ const Vacancies = () => {
     };
 
     if (isLoading) {
-        return <div className="section-column">Loading job descriptions...</div>;
+        return <div className="section-column "><LoadingCareers /> </div>;
     }
 
     return (
         <div className="section-column">
-            <p className='Title-Header'>Vakansiyalar</p>
-            {/* ADD conditional class for width toggle */}
+            <p className='Title-Header'>Vakansİyalar</p>
             <div className={`Section-Sort-Group ${isCompactSortGroup ? 'compact' : ''}`}>
 
                 <div className="Section-Sort-Left">
-                    {/* CHANGE onClick to handleFirstSortClick which does BOTH functions */}
                     <div className="Sorts animated-1" onClick={handleFirstSortClick}>
                         {isColumnLayout ? (
                             <img src={SortColumnImage} className='No-Select' alt="Column layout" />
@@ -455,11 +493,17 @@ const Vacancies = () => {
                         <img src={ClockImage} className='No-Select' alt="Sort by time" />
                     </div>
                     <div
-                        className={`Sorts animated-3 ${isSearchOpen ? 'search-open' : ''}`}
+                        className={`Sorts animated-3 ${isSortedByAtoZ ? 'active' : ''}`}
+                        onClick={toggleSortByAtoZ}
+                    >
+                        <img src={AZImage} className='No-Select' alt="Sort by A to Z" />
+                    </div>
+                    <div
+                        className={`Sorts animated-4 ${isSearchOpen ? 'search-open' : ''}`}
                         onClick={toggleSearch}
                     >
                         <img src={SearchImage} className='No-Select' alt="Search" />
-                        <textarea 
+                        <textarea
                             placeholder="Axtarış..."
                             value={searchTerm}
                             onChange={handleSearchChange}
@@ -489,9 +533,10 @@ const Vacancies = () => {
                         displayedData.map((item) => {
                             const expired = isJobExpired(item);
                             return (
-                                <div className={`Cards-grid Main-Button-Style Main-Card-grid ${isColumnLayout ? 'column-Cards-grid' : 'row-Cards-grid'} animated-${item.id + 1} ${expired ? 'expired-job' : ''}`}
+                                <div className={`Cards-grid  Main-Card-grid ${isColumnLayout ? 'column-Cards-grid' : 'row-Cards-grid'} animated-${item.id + 1} ${expired ? 'expired-job' : ''}`}
                                     key={`${item.id}-${animationKey}`} >
-                                    <div className={`Cards-Item-grid ${expired ? 'expired' : ''}`}>
+                                    <div className={`Cards-Item-grid ${expired ? 'expired' : ''}`} onClick={() => handleApplyClick(item)}
+                                    >
                                         <span className='Cards-Item-Folder'>
                                             <p className='card-title-grid'>{item.title}</p>
                                             {item.date && (
@@ -507,7 +552,7 @@ const Vacancies = () => {
                                                 </div>
                                             )}
                                         </span>
-                                        <div className="Classic-Button">
+                                        <div className="Classic-Button ">
                                             <a
                                                 onClick={() => handleApplyClick(item)}
                                                 className={expired ? 'expired-button' : ''}
@@ -535,7 +580,6 @@ const Vacancies = () => {
                             <img src={CloseImage} alt="Close" />
                         </button>
                         <div className="popup-container">
-                            {/* Left side content */}
                             <div className="job-details">
                                 {selectedJob.id === 0 ? (
                                     <>
@@ -571,14 +615,42 @@ const Vacancies = () => {
                                             )}
                                         </div>
                                         <div className="job-description">
-                                            <p style={{ whiteSpace: 'pre-line' }}>{jobDescriptions[selectedJob.id]}</p>
+                                            <p style={{ whiteSpace: 'pre-line' }}>
+                                                {jobDescriptions[selectedJob.id]?.split('\n').map((line, index) => {
+                                                    const trimmedLine = line.trim();
+                                                    const upperCaseLine = trimmedLine.toUpperCase();
+
+                                                    if (upperCaseLine.includes('ÜMUMİ VƏZİFƏ ÖHDƏLİKLƏRİ:') ||
+                                                        upperCaseLine.includes('Ümumi vəzifə öhdəlikləri:') ||
+                                                        upperCaseLine.includes('ümumi vəzifə öhdəlikləri:') ||
+
+                                                        upperCaseLine.includes('NAMİZƏDƏ QARŞI TƏLƏBLƏR:') ||
+                                                        upperCaseLine.includes('Namizədə qarşı tələblər:') ||
+                                                        upperCaseLine.includes('namizədə qarşı tələblər:') ||
+
+                                                        upperCaseLine.includes('PEŞƏKARLIQ BACARIQLARI:') ||
+                                                        upperCaseLine.includes('Peşəkarlıq bacarıqları:') ||
+                                                        upperCaseLine.includes('peşəkarlıq bacarıqları:')
+                                                    ) {
+                                                        return (
+                                                            <strong key={index} style={{ textTransform: 'uppercase' }}>
+                                                                {upperCaseLine}
+                                                            </strong>
+                                                        );
+                                                    }
+                                                    return line;
+                                                }).reduce((acc, line, index) => {
+                                                    if (acc === null) return [line];
+                                                    return [...acc, <br key={`br-${index}`} />, line];
+                                                }, null)}
+                                            </p>
                                         </div>
                                     </>
                                 )}
                             </div>
 
                             <div className="application-form">
-                                <h3>Müraciət Formu</h3>
+                                <h3>Müraciət Anketi</h3>
                                 <form onSubmit={handleSubmit}>
                                     <div className="form-group">
                                         <input
@@ -656,7 +728,7 @@ const Vacancies = () => {
                                             <p className="optional-text"></p>
                                         )}
                                     </div>
- 
+
                                     {selectedJob.id === 0 && (
                                         <div className="form-group">
                                             <textarea
@@ -672,7 +744,7 @@ const Vacancies = () => {
 
                                     )}
 
-                                    <button type="submit" className="Main-Button">Müraciəti göndər</button>
+                                    <button type="submit" className="Main-Button">MÜRACİƏTİ GÖNDƏR</button>
                                 </form>
                             </div>
                         </div>

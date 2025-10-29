@@ -32,14 +32,14 @@
 }
 
 .Main-Button-Unfocused {
-    position: relative;
+  position: relative;
   background: none;
   color: var(--primary-color);
   height: 38px;
   width: fit-content;
   padding-inline: calc(var(--safe-place) * 1);
   border-radius: var(--secondary-radius);
-    border: 1px solid var(--light-gray-color);
+  border: 1px solid var(--light-gray-color);
   z-index: 1;
   display: flex;
   align-items: center;
@@ -61,14 +61,25 @@
 .Main-Button-Unfocused:hover {
   background-color: var(--primary-color);
   color: var(--white-color);
-   animation: fade-in-down 0.7s ease 1;
+  animation: fade-in-down 0.7s ease 1;
   -webkit-animation: fade-in-down 0.7s ease 1;
+}
+
+ .Classic-a{
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .Main-Button {
   position: relative;
-  background: linear-gradient(to bottom, var(--low-shade-light-blue-color), var(--high-shade-light-blue-color));
-  color: var(--primary-color);
+  /* background: linear-gradient(to bottom, var(--low-shade-light-blue-color), var(--high-shade-light-blue-color)); */
+  background: linear-gradient(to bottom, var(--button-color-up), var(--button-color-down));
+  /* color: var(--primary-color); */
+  color: var(--white-color);
   height: 38px;
   width: fit-content;
   padding-inline: calc(var(--safe-place) * 1);
@@ -80,7 +91,7 @@
   align-items: center;
   justify-content: center;
   font-size: var(--font-14px);
-  font-weight: 500;
+  font-weight: 400;
   padding-bottom: 3px;
   animation: fade-in-down 0.7s ease 1;
   -webkit-animation: fade-in-down 0.7s ease 1;
@@ -111,7 +122,10 @@
   height: 100%;
   width: 100%;
 }
+.animated-1 .Classic-Button {
+    border: 1px solid var(--light-gray-color);
 
+}
 .Classic-Button {
   position: relative;
   background-color: none;
@@ -119,7 +133,7 @@
   height: 38px;
   width: calc(100% - (var(--inner-safe-place)*2));
   border-radius: var(--secondary-radius);
-  border: 1px solid var(--light-gray-color);
+  border: 1px solid var(--primary-color-half-opacity);
   z-index: 1;
   display: flex;
   align-items: center;
@@ -138,11 +152,11 @@
 
 .Classic-Button:hover {
   border: 1px solid var(--primary-color-half-opacity);
- background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
 
-.Classic-Button:hover a{
-color: white;
+.Classic-Button:hover a {
+  color: white;
 }
 
 .Main-Button a,
@@ -187,10 +201,18 @@ color: white;
 
 .No-Select {
   user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
+  user-drag: none;
 }
+
+
 
 .Main-Popup::before {
   content: '';
@@ -398,4 +420,29 @@ color: white;
 }
 
  */
+.Snackbar-Style img {
+  width: 22px;
+  height: 22px;
+  filter: var(--primary-color-filter);
+}
 
+.Snackbar-Style p {
+  margin-bottom: 2px;
+
+}
+
+.Snackbar-Style {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--inner-safe-gap) / 1.2);
+
+
+  outline: 2px solid var(--primary-color-half-opacity);
+  color: var(--primary-color);
+  height: fit-content;
+  width: fit-content;
+  padding: var(--inner-safe-gap);
+  border-radius: var(--secondary-radius);
+  background-color: none;
+}

@@ -18,6 +18,8 @@
 
 .items {
     cursor: pointer;
+    font-weight: 500;
+    opacity: 0.9;
 
 }
 
@@ -28,7 +30,7 @@
 
 .items:hover {
     color: var(--primary-color);
-
+opacity: 1;
 }
 
 .Navbar-Group::before {
@@ -238,7 +240,7 @@
 }
 
 
-@media (max-width: 1500px) {
+@media (max-width: 1130px) {
     .Footer {
         display: flex;
         flex-direction: column;
@@ -257,7 +259,13 @@
 }
 
 @media (max-width: 768px) {
+.Nav-End-items {
+    display: none;
+}
 
+.Image-Social {
+    display: none !important;
+}
 
 }
 
@@ -269,3 +277,19 @@
   gap: 2.5rem;
 }
 
+@media (max-width: 768px) {
+  .Logo-Stack-Footer img {
+    display: none;
+  }
+
+  .Logo-Stack-Footer img:first-child,
+  .Logo-Stack-Footer img:last-child {
+    display: inline-block;
+  }
+  .Footer-Group {
+    padding-top: 0;
+  }
+}
+.Nav-End .Nav-End-items:nth-child(4) {
+  display: none;
+}
