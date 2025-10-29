@@ -28,7 +28,7 @@ const Vacancies = () => {
         linkedin: ''
     });
 
-    const [isSortedByDate, setIsSortedByDate] = useState(false); // Default false - not active
+    const [isSortedByDate, setIsSortedByDate] = useState(false); 
     const [isSortedByAtoZ, setIsSortedByAtoZ] = useState(false);
     const [displayedData, setDisplayedData] = useState([]);
     const [showAll, setShowAll] = useState(false);
@@ -40,14 +40,14 @@ const Vacancies = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isCompactSortGroup, setIsCompactSortGroup] = useState(false);
 
-    // Fetch career data from GitHub
+   
     useEffect(() => {
         const fetchCareerData = async () => {
             try {
                 const response = await fetch('https://raw.githubusercontent.com/Absheron-Career-Portal/STORAGE/refs/heads/main/public/data/career.json');
                 const data = await response.json();
 
-                // Transform the data to match your component's structure
+               
                 const transformedData = data.map(item => ({
                     id: item.id,
                     EyeImage: EyeImage,
@@ -68,7 +68,6 @@ const Vacancies = () => {
 
                 setOriginalArrayData(transformedData);
                 
-                // Sort by date (newest to oldest) by default without activating the button
                 const sortedData = sortByDateNewestToOldest(transformedData);
                 setDisplayedData(sortedData.slice(0, itemsToShow));
             } catch (error) {
@@ -80,7 +79,6 @@ const Vacancies = () => {
         fetchCareerData();
     }, []);
 
-    // Sort function for newest to oldest (DEFAULT)
     const sortByDateNewestToOldest = (data) => {
         const firstItem = data.find(item => item.id === 0) || data[0];
         const otherItems = data.filter(item => item.id !== 0);
@@ -104,13 +102,12 @@ const Vacancies = () => {
                 return new Date(year, month - 1, day);
             };
 
-            return parseDate(b.date) - parseDate(a.date); // Newest to oldest
+            return parseDate(b.date) - parseDate(a.date);  
         });
 
         return [firstItem, ...sortedItems];
     };
 
-    // Sort function for oldest to newest (WHEN BUTTON IS CLICKED)
     const sortByDateOldestToNewest = (data) => {
         const firstItem = data.find(item => item.id === 0) || data[0];
         const otherItems = data.filter(item => item.id !== 0);
@@ -134,7 +131,7 @@ const Vacancies = () => {
                 return new Date(year, month - 1, day);
             };
 
-            return parseDate(a.date) - parseDate(b.date); // Oldest to newest
+            return parseDate(a.date) - parseDate(b.date);  
         });
 
         return [firstItem, ...sortedItems];
@@ -154,7 +151,6 @@ const Vacancies = () => {
         return [firstItem, ...sortedItems];
     };
 
-    // Load ALL job descriptions from GitHub API
     useEffect(() => {
         const loadJobDescriptions = async () => {
             if (originalArrayData.length === 0) return;
@@ -164,7 +160,6 @@ const Vacancies = () => {
 
                 for (const job of originalArrayData) {
                     try {
-                        // ALL descriptions come from remote source
                         if (job.descriptionKey) {
                             const fileUrl = `https://raw.githubusercontent.com/Absheron-Career-Portal/STORAGE/refs/heads/main/public/docs/${job.descriptionKey}.txt`;
                             const response = await fetch(fileUrl);
@@ -195,12 +190,9 @@ const Vacancies = () => {
         loadJobDescriptions();
     }, [originalArrayData]);
 
-    // Search functionality
     useEffect(() => {
         if (searchTerm.trim() === '') {
-            // If search is empty, show normal data
             if (isSortedByDate) {
-                // When date button is active, show oldest to newest
                 const sortedData = sortByDateOldestToNewest(originalArrayData);
                 const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
                 setDisplayedData(limitedData);
@@ -209,13 +201,11 @@ const Vacancies = () => {
                 const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
                 setDisplayedData(limitedData);
             } else {
-                // Default: newest to oldest (button not active)
                 const sortedData = sortByDateNewestToOldest(originalArrayData);
                 const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
                 setDisplayedData(limitedData);
             }
         } else {
-            // If search term exists, filter data with proper null checking
             const filteredData = originalArrayData.filter(item => {
                 const title = item.title || '';
                 const location = item.location || '';
@@ -227,14 +217,13 @@ const Vacancies = () => {
                     type.toLowerCase().includes(searchLower);
             });
             
-            // Apply current sorting to filtered results
             let sortedFilteredData = filteredData;
             if (isSortedByDate) {
                 sortedFilteredData = sortByDateOldestToNewest(filteredData);
             } else if (isSortedByAtoZ) {
                 sortedFilteredData = sortByAtoZ(filteredData);
             } else {
-                // Default: newest to oldest
+                //newest to oldest
                 sortedFilteredData = sortByDateNewestToOldest(filteredData);
             }
             
@@ -297,19 +286,16 @@ const Vacancies = () => {
     const toggleSortByDate = () => {
         if (originalArrayData.length === 0) return;
 
-        // Reset A-Z sorting when date sorting is activated
         if (isSortedByAtoZ) {
             setIsSortedByAtoZ(false);
         }
 
         if (isSortedByDate) {
-            // Currently showing oldest to newest, turn off sorting (back to default: newest to oldest)
             const sortedData = sortByDateNewestToOldest(originalArrayData);
             const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
             setDisplayedData(limitedData);
             setIsSortedByDate(false);
         } else {
-            // Currently showing default (newest to oldest), switch to oldest to newest
             const sortedData = sortByDateOldestToNewest(originalArrayData);
             const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
             setDisplayedData(limitedData);
@@ -322,13 +308,11 @@ const Vacancies = () => {
     const toggleSortByAtoZ = () => {
         if (originalArrayData.length === 0) return;
 
-        // Reset date sorting when A-Z sorting is activated
         if (isSortedByDate) {
             setIsSortedByDate(false);
         }
 
         if (isSortedByAtoZ) {
-            // Turn off A-Z sorting (back to default: newest to oldest)
             const sortedData = sortByDateNewestToOldest(originalArrayData);
             const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
             setDisplayedData(limitedData);
@@ -363,7 +347,6 @@ const Vacancies = () => {
         if (originalArrayData.length === 0) return;
 
         if (showAll) {
-            // Show less
             if (isSortedByDate) {
                 const sortedData = sortByDateOldestToNewest(originalArrayData);
                 setDisplayedData(sortedData.slice(0, itemsToShow));
@@ -371,12 +354,10 @@ const Vacancies = () => {
                 const sortedData = sortByAtoZ(originalArrayData);
                 setDisplayedData(sortedData.slice(0, itemsToShow));
             } else {
-                // Default: newest to oldest
                 const sortedData = sortByDateNewestToOldest(originalArrayData);
                 setDisplayedData(sortedData.slice(0, itemsToShow));
             }
         } else {
-            // Show all
             if (isSortedByDate) {
                 const sortedData = sortByDateOldestToNewest(originalArrayData);
                 setDisplayedData(sortedData);
@@ -384,7 +365,6 @@ const Vacancies = () => {
                 const sortedData = sortByAtoZ(originalArrayData);
                 setDisplayedData(sortedData);
             } else {
-                // Default: newest to oldest
                 const sortedData = sortByDateNewestToOldest(originalArrayData);
                 setDisplayedData(sortedData);
             }
@@ -525,7 +505,6 @@ const Vacancies = () => {
                 </div>
             </div>
 
-            {/* Hide main content when popup is open */}
             {!showPopup && (
                 <div className={`Section-Card-Grid-container ${isColumnLayout ? 'column-layout' : 'row-layout'}`}
                     key={animationKey} >

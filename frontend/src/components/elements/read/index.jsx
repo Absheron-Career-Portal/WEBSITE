@@ -19,7 +19,7 @@ const Read = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch the main blog post
+       
         const response = await fetch(`http://localhost:8080/api/blogs/${id}`);
         if (!response.ok) {
           throw new Error('Blog not found');
@@ -33,7 +33,7 @@ const Read = () => {
         const blogData = result.data;
         setBlog(blogData);
 
-        // Fetch related blogs from the same category
+       
         if (blogData.category) {
           const relatedResponse = await fetch(`http://localhost:8080/api/blogs/category/${blogData.category}`);
           if (relatedResponse.ok) {
@@ -46,7 +46,7 @@ const Read = () => {
       } catch (err) {
         console.error('Error fetching blog:', err);
         setError(err.message);
-        navigate('/not-found'); // Redirect if blog doesn't exist
+        navigate('/not-found'); 
       } finally {
         setLoading(false);
       }

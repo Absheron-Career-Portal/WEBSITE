@@ -26,7 +26,7 @@ import Header9MobileImg from '../../../assets/image/header/FrameHeader9.mobile.p
 const Info = () => {
     const [isMobile, setIsMobile] = useState(false);
     
-    // Check if screen is mobile size
+  
     useEffect(() => {
         const checkScreenSize = () => {
             setIsMobile(window.innerWidth < 768);

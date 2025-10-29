@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import chevronIcon from "../../../assets/svg/chevron.down.svg";
 
 const Faq = () => {
-    // Set the first item (id: 0) as open by default
+  
     const [openItemId, setOpenItemId] = useState(0);
 
     const ArrayData = [

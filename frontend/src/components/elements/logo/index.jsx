@@ -8,7 +8,7 @@ const LogoMark = () => {
     
     const isHomepage = window.location.pathname === '/';
     
-    // If already at top, refresh immediately
+   
     if (window.pageYOffset === 0) {
       if (isHomepage) {
         window.location.reload();
@@ -18,13 +18,13 @@ const LogoMark = () => {
       return;
     }
     
-    // Scroll to top
+ 
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
     
-    // Listen for scroll completion
+   
     const checkScroll = () => {
       if (window.pageYOffset === 0) {
         window.removeEventListener('scroll', checkScroll);
@@ -36,10 +36,10 @@ const LogoMark = () => {
       }
     };
     
-    // Check scroll position periodically
+    
     window.addEventListener('scroll', checkScroll);
     
-    // Fallback timeout in case scroll event doesn't fire
+  
     setTimeout(() => {
       window.removeEventListener('scroll', checkScroll);
       if (window.pageYOffset === 0) {

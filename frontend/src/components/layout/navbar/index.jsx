@@ -18,13 +18,12 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Helper to scroll to section by ID, centered
     const scrollToSection = (id) => {
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({
                 behavior: 'smooth',
-                block: 'center', // Aligns to center instead of top
+                block: 'center',  
             });
         }
     };

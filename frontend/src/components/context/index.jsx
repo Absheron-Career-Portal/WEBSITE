@@ -84,13 +84,13 @@ const CustomContextMenu = ({ children }) => {
   };
 
   const handlePrint = () => {
-    // Hide menu immediately
+   
     setMenuVisible(false);
 
-    // Delay print to let menu hide
+   
     setTimeout(() => {
       if (selectedText) {
-        // Open a new temporary window to print selected text only
+       
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`<pre>${selectedText}</pre>`);
         printWindow.document.close();
@@ -98,7 +98,7 @@ const CustomContextMenu = ({ children }) => {
         printWindow.print();
         printWindow.close();
       } else {
-        // Print the whole page
+        
         window.print();
       }
     }, 100);
@@ -111,151 +111,14 @@ const CustomContextMenu = ({ children }) => {
     setMenuVisible(false);
   };
 
-  // const handlePrintSelection = () => {
-  //   setMenuVisible(false);
-
-  //   setTimeout(() => {
-  //     const printDiv = document.createElement('div');
-  //     printDiv.id = 'print-selection-container';
-  //     printDiv.style.cssText = `
-  //     position: fixed;
-  //     left: -9999px;
-  //     top: 0;
-  //     font-family: 'Inter', sans-serif;
-  //     font-size: 12pt;
-  //     line-height: 1.3;
-  //     white-space: pre-wrap;
-  //   `;
-
-  //     // Add content with proper paragraph handling
-  //     printDiv.innerHTML = selectedText.split('\n\n')
-  //       .map(para => `<div style="margin-bottom: 5pt; page-break-inside: avoid;">${para.trim()}</div>`)
-  //       .join('');
-
-  //     document.body.appendChild(printDiv);
-
-  //     // Add print styles
-  //     const style = document.createElement('style');
-  //     style.textContent = `
-  //     @media print {
-  //       body > :not(#print-selection-container) {
-  //         display: none !important;
-  //       }
-  //       #print-selection-container {
-  //         position: static !important;
-  //         left: 0 !important;
-  //         padding: 5mm;
-  //       }
-  //       @page {
-  //         size: auto;
-  //         margin: 15mm;
-  //       }
-  //     }
-  //   `;
-  //     document.head.appendChild(style);
-
-  //     // Ensure Inter font is loaded
-  //     if (!document.querySelector('link[href*="fonts.googleapis.com/css2?family=Inter"]')) {
-  //       const fontLink = document.createElement('link');
-  //       fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter&display=swap';
-  //       fontLink.rel = 'stylesheet';
-  //       document.head.appendChild(fontLink);
-  //     }
-
-  //     window.print();
-
-  //     // Cleanup
-  //     setTimeout(() => {
-  //       printDiv.remove();
-  //       style.remove();
-  //     }, 100);
-  //   }, 100);
-  // };
+ 
 
   const handleRefresh = () => {
     window.location.reload();
     setMenuVisible(false);
   };
 
-  // const handlePrintSelection = () => {
-  //   setMenuVisible(false);
 
-  //   setTimeout(() => {
-  //     const printDiv = document.createElement('div');
-  //     printDiv.style.display = 'none';
-  //     printDiv.id = 'printDiv';
-
-  //     const contentDiv = document.createElement('div');
-  //     contentDiv.style.width = '100%'; // Changed from max-width
-  //     contentDiv.style.margin = '0';
-  //     contentDiv.style.padding = '10mm'; // Reduced padding
-  //     contentDiv.style.boxSizing = 'border-box';
-  //     contentDiv.style.fontFamily = "'Inter', sans-serif";
-  //     contentDiv.style.fontSize = '12pt';
-  //     contentDiv.style.lineHeight = '1.5';
-  //     contentDiv.style.whiteSpace = 'pre-wrap';
-  //     contentDiv.style.wordWrap = 'break-word';
-  //     contentDiv.style.overflowWrap = 'break-word';
-  //     contentDiv.textContent = selectedText;
-
-  //     printDiv.appendChild(contentDiv);
-
-  //     if (!document.querySelector('link[href*="fonts.googleapis.com/css2?family=Inter"]')) {
-  //       const fontLink = document.createElement('link');
-  //       fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter&display=swap';
-  //       fontLink.rel = 'stylesheet';
-  //       document.head.appendChild(fontLink);
-  //     }
-
-  //     document.body.appendChild(printDiv);
-
-  //     const style = document.createElement('style');
-  //     style.innerHTML = `
-  //     @media print {
-  //       body * {
-  //         display: none !important;
-  //         font-family: 'Inter', sans-serif !important;
-  //       }
-  //       #printDiv {
-  //         all: initial !important;
-  //         display: block !important;
-  //         position: fixed !important;
-  //         top: 0 !important;
-  //         left: 0 !important;
-  //         right: 0 !important;
-  //         padding: 10mm !important;
-  //         margin: 0 !important;
-  //         font-family: 'Inter', sans-serif !important;
-  //         font-size: 12pt !important;
-  //         line-height: 1.5 !important;
-  //         white-space: pre-wrap !important;
-  //         word-wrap: break-word !important;
-  //       }
-  //       #printDiv > div {
-  //         all: initial !important;
-  //         display: block !important;
-  //         width: auto !important;
-  //         height: auto !important;
-  //         margin: 0 !important;
-  //         padding: 0 !important;
-  //       }
-  //       @page {
-  //         size: auto !important;
-  //         margin: 10mm !important;
-  //       }
-  //     }
-  //   `;
-
-  //     document.head.appendChild(style);
-
-  //     window.print();
-
-  //     setTimeout(() => {
-  //       printDiv.remove();
-  //       style.remove();
-  //     }, 100);
-  //   }, 100);
-  // };
 
   const handlePrintSelection = async () => {
     setMenuVisible(false);
@@ -320,10 +183,10 @@ const CustomContextMenu = ({ children }) => {
       selection.removeAllRanges();
       selection.addRange(range);
 
-      // Get the actual selected text
+
       const selectedText = selection.toString();
 
-      // Store the selected text in state
+     
       setSelectedText(selectedText);
 
       setMenuVisible(wasMenuVisible);

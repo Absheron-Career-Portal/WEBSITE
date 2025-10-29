@@ -1,7 +1,7 @@
 import "../src/common/style/root.css";
 import { LanguageProvider } from "./common/i18n";
 import AppRoutes from "./common/routes";
-import CustomContextMenu from "./components/context"; // Adjust the import path
+import CustomContextMenu from "./components/context";
 
 const App = () => {
   return (

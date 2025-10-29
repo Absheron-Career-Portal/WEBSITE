@@ -31,7 +31,7 @@ const Admission = () => {
   const [isInView, setIsInView] = useState(false);
   const sectionRef = useRef(null);
 
-  // Add intersection observer
+ 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {

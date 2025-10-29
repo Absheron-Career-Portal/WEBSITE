@@ -28,7 +28,7 @@ const Header = () => {
     const videoRef = useRef(null);
     const intervalRef = useRef(null);
 
-    // Clear any existing interval
+ 
     const clearAutoAdvance = () => {
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
@@ -36,7 +36,7 @@ const Header = () => {
         }
     };
 
-    // Set up auto-advance for images
+   
     const setupAutoAdvance = () => {
         clearAutoAdvance();
         
@@ -56,23 +56,23 @@ const Header = () => {
     }, [currentIndex, isHovered]);
 
     useEffect(() => {
-        // Handle video playback when switching slides
+      
         if (mediaItems[currentIndex].type === 'video' && videoRef.current) {
-            // Clear the auto-advance interval for videos
+           
             clearAutoAdvance();
             
-            // Play the video
+         
             videoRef.current.play().catch(error => {
                 console.log("Video autoplay prevented:", error);
             });
         } else {
-            // Set up auto-advance for images
+          
             setupAutoAdvance();
         }
     }, [currentIndex]);
 
     const goToPrev = () => {
-        // Pause video if currently playing
+        
         if (mediaItems[currentIndex].type === 'video' && videoRef.current) {
             videoRef.current.pause();
         }
@@ -83,7 +83,7 @@ const Header = () => {
     };
 
     const goToNext = () => {
-        // Pause video if currently playing
+        
         if (mediaItems[currentIndex].type === 'video' && videoRef.current) {
             videoRef.current.pause();
         }
@@ -94,7 +94,7 @@ const Header = () => {
     };
 
     const goToMedia = (index) => {
-        // Pause video if currently playing
+      
         if (mediaItems[currentIndex].type === 'video' && videoRef.current) {
             videoRef.current.pause();
         }
@@ -103,7 +103,7 @@ const Header = () => {
     };
 
     const handleVideoEnd = () => {
-        // When video ends, go to next slide
+        
         goToNext();
     };
 

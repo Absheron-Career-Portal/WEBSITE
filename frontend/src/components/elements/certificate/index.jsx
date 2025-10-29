@@ -35,7 +35,7 @@ const Sertificate = () => {
             } else if (width < 1500) {
                 setItemsPerPage(2);
             } else {
-                setItemsPerPage(3); // Max now is 3
+                setItemsPerPage(3);  
             }
 
 
