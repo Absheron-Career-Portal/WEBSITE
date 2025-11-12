@@ -28,7 +28,7 @@ const Vacancies = () => {
         linkedin: ''
     });
 
-    const [isSortedByDate, setIsSortedByDate] = useState(false); 
+    const [isSortedByDate, setIsSortedByDate] = useState(false);
     const [isSortedByAtoZ, setIsSortedByAtoZ] = useState(false);
     const [displayedData, setDisplayedData] = useState([]);
     const [showAll, setShowAll] = useState(false);
@@ -40,14 +40,14 @@ const Vacancies = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isCompactSortGroup, setIsCompactSortGroup] = useState(false);
 
-   
+
     useEffect(() => {
         const fetchCareerData = async () => {
             try {
                 const response = await fetch('https://raw.githubusercontent.com/Absheron-Career-Portal/STORAGE/refs/heads/main/public/data/career.json');
                 const data = await response.json();
 
-               
+
                 const transformedData = data.map(item => ({
                     id: item.id,
                     EyeImage: EyeImage,
@@ -67,7 +67,7 @@ const Vacancies = () => {
                 }));
 
                 setOriginalArrayData(transformedData);
-                
+
                 const sortedData = sortByDateNewestToOldest(transformedData);
                 setDisplayedData(sortedData.slice(0, itemsToShow));
             } catch (error) {
@@ -102,7 +102,7 @@ const Vacancies = () => {
                 return new Date(year, month - 1, day);
             };
 
-            return parseDate(b.date) - parseDate(a.date);  
+            return parseDate(b.date) - parseDate(a.date);
         });
 
         return [firstItem, ...sortedItems];
@@ -131,7 +131,7 @@ const Vacancies = () => {
                 return new Date(year, month - 1, day);
             };
 
-            return parseDate(a.date) - parseDate(b.date);  
+            return parseDate(a.date) - parseDate(b.date);
         });
 
         return [firstItem, ...sortedItems];
@@ -216,7 +216,7 @@ const Vacancies = () => {
                     location.toLowerCase().includes(searchLower) ||
                     type.toLowerCase().includes(searchLower);
             });
-            
+
             let sortedFilteredData = filteredData;
             if (isSortedByDate) {
                 sortedFilteredData = sortByDateOldestToNewest(filteredData);
@@ -226,7 +226,7 @@ const Vacancies = () => {
                 //newest to oldest
                 sortedFilteredData = sortByDateNewestToOldest(filteredData);
             }
-            
+
             setDisplayedData(sortedFilteredData);
         }
         setAnimationKey(prevKey => prevKey + 1);
@@ -430,10 +430,21 @@ const Vacancies = () => {
                 formDataToSend.append('cv', formData.cv);
             }
 
-            const response = await fetch('http://localhost:5000/api/applications/submit', {
+            // const response = await fetch('http://localhost:5000/api/applications/submit', {
+            //     method: 'POST',
+            //     body: formDataToSend
+            // });
+
+            const response = await fetch(' https://career.absheronport.az/api/applications/submit', {
                 method: 'POST',
                 body: formDataToSend
             });
+
+
+            // const response = await fetch('https://backend-website-bice.vercel.app/api/applications/submit', {
+            //     method: 'POST',
+            //     body: formDataToSend
+            // });
 
             const result = await response.json();
 
