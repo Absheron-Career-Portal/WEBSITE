@@ -430,15 +430,15 @@ const Vacancies = () => {
                 formDataToSend.append('cv', formData.cv);
             }
 
-            // const response = await fetch('http://localhost:5000/api/applications/submit', {
-            //     method: 'POST',
-            //     body: formDataToSend
-            // });
-
-            const response = await fetch(' https://career.absheronport.az/api/applications/submit', {
+            const response = await fetch('http://localhost:5000/api/applications/submit', {
                 method: 'POST',
                 body: formDataToSend
             });
+
+            // const response = await fetch(' https://career.absheronport.az/api/applications/submit', {
+            //     method: 'POST',
+            //     body: formDataToSend
+            // });
 
 
             // const response = await fetch('https://backend-website-bice.vercel.app/api/applications/submit', {
