@@ -430,7 +430,7 @@ const Vacancies = () => {
                 formDataToSend.append('cv', formData.cv);
             }
 
-            const response = await fetch('http://localhost:5000/api/applications/submit', {
+            const response = await fetch('https://website-2808s.onrender.com/api/applications/submit', {
                 method: 'POST',
                 body: formDataToSend
             });
