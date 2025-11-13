@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import ArrayData1Img from '../../../assets/svg/person.2.svg';
 import ArrayData1Svg from '../../../assets/svg/calendar.svg';
 import ArrayData0Svg from '../../../assets/svg/clock.svg';
@@ -14,6 +15,8 @@ import SearchImage from '../../../assets/svg/magnifyingglass.svg';
 import LoadingCareers from '../snackbar/loading';
 
 const Vacancies = () => {
+    const { jobSlug } = useParams();
+    const navigate = useNavigate();
     const [isColumnLayout, setIsColumnLayout] = useState(true);
     const [animationKey, setAnimationKey] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
@@ -40,6 +43,35 @@ const Vacancies = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isCompactSortGroup, setIsCompactSortGroup] = useState(false);
 
+    const createSlug = (title) => {
+        if (!title) return 'job';
+        
+        const charMap = {
+            'ş': 's', 'Ş': 's',
+            'ğ': 'g', 'Ğ': 'g',
+            'ü': 'u', 'Ü': 'u',
+            'ı': 'i', 'İ': 'i',
+            'ö': 'o', 'Ö': 'o',
+            'ç': 'c', 'Ç': 'c',
+            'ə': 'e', 'Ə': 'e',
+            'ı': 'i', 'I': 'i',
+            'ğ': 'g', 'Ğ': 'g',
+            'ü': 'u', 'Ü': 'u',
+            'ş': 's', 'Ş': 's',
+            'ö': 'o', 'Ö': 'o',
+            'ç': 'c', 'Ç': 'c'
+        };
+
+        let slug = title.toLowerCase();
+        
+        slug = slug.replace(/[şŞğĞüÜıİöÖçÇəƏ]/g, char => charMap[char] || char);
+        
+        slug = slug
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)+/g, '');
+        
+        return slug || 'job';
+    };
 
     useEffect(() => {
         const fetchCareerData = async () => {
@@ -47,9 +79,8 @@ const Vacancies = () => {
                 const response = await fetch('https://raw.githubusercontent.com/Absheron-Career-Portal/STORAGE/refs/heads/main/public/data/career.json');
                 const data = await response.json();
 
-
                 const transformedData = data.map(item => ({
-                    id: item.id,
+                    id: item.id || 0,
                     EyeImage: EyeImage,
                     view: item.view?.toString() || '0',
                     image: ArrayData1Img,
@@ -63,13 +94,27 @@ const Vacancies = () => {
                     type: item.type || '',
                     typeImage: ArrayData3Svg,
                     descriptionKey: item.description ? item.description.split('/').pop().replace('.txt', '') : '',
-                    link: item.link || '#'
+                    link: item.link || '#',
+                    slug: createSlug(item.title)
                 }));
 
                 setOriginalArrayData(transformedData);
 
                 const sortedData = sortByDateNewestToOldest(transformedData);
                 setDisplayedData(sortedData.slice(0, itemsToShow));
+                
+                if (jobSlug) {
+                    const jobFromUrl = transformedData.find(job => 
+                        job.slug === jobSlug
+                    );
+                    if (jobFromUrl) {
+                        const expired = isJobExpired(jobFromUrl);
+                        if (!expired) {
+                            setSelectedJob(jobFromUrl);
+                            setShowPopup(true);
+                        }
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching career data:', error);
                 setIsLoading(false);
@@ -77,11 +122,13 @@ const Vacancies = () => {
         };
 
         fetchCareerData();
-    }, []);
+    }, [jobSlug]);
 
     const sortByDateNewestToOldest = (data) => {
+        if (!data || data.length === 0) return [];
+        
         const firstItem = data.find(item => item.id === 0) || data[0];
-        const otherItems = data.filter(item => item.id !== 0);
+        const otherItems = data.filter(item => item && item.id !== 0);
 
         const monthNames = {
             'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
@@ -91,7 +138,7 @@ const Vacancies = () => {
         };
 
         const sortedItems = [...otherItems].sort((a, b) => {
-            if (!a.date || !b.date) return 0;
+            if (!a || !b || !a.date || !b.date) return 0;
 
             const parseDate = (dateStr) => {
                 const parts = dateStr.replace(',', '').split(' ');
@@ -109,8 +156,10 @@ const Vacancies = () => {
     };
 
     const sortByDateOldestToNewest = (data) => {
+        if (!data || data.length === 0) return [];
+        
         const firstItem = data.find(item => item.id === 0) || data[0];
-        const otherItems = data.filter(item => item.id !== 0);
+        const otherItems = data.filter(item => item && item.id !== 0);
 
         const monthNames = {
             'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
@@ -120,7 +169,7 @@ const Vacancies = () => {
         };
 
         const sortedItems = [...otherItems].sort((a, b) => {
-            if (!a.date || !b.date) return 0;
+            if (!a || !b || !a.date || !b.date) return 0;
 
             const parseDate = (dateStr) => {
                 const parts = dateStr.replace(',', '').split(' ');
@@ -137,14 +186,15 @@ const Vacancies = () => {
         return [firstItem, ...sortedItems];
     };
 
-    // Sort function for A to Z
     const sortByAtoZ = (data) => {
+        if (!data || data.length === 0) return [];
+        
         const firstItem = data.find(item => item.id === 0) || data[0];
-        const otherItems = data.filter(item => item.id !== 0);
+        const otherItems = data.filter(item => item && item.id !== 0);
 
         const sortedItems = [...otherItems].sort((a, b) => {
-            const titleA = a.title || '';
-            const titleB = b.title || '';
+            const titleA = a?.title || '';
+            const titleB = b?.title || '';
             return titleA.localeCompare(titleB);
         });
 
@@ -191,22 +241,23 @@ const Vacancies = () => {
     }, [originalArrayData]);
 
     useEffect(() => {
+        if (!originalArrayData || originalArrayData.length === 0) return;
+
         if (searchTerm.trim() === '') {
+            let sortedData;
             if (isSortedByDate) {
-                const sortedData = sortByDateOldestToNewest(originalArrayData);
-                const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
-                setDisplayedData(limitedData);
+                sortedData = sortByDateOldestToNewest(originalArrayData);
             } else if (isSortedByAtoZ) {
-                const sortedData = sortByAtoZ(originalArrayData);
-                const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
-                setDisplayedData(limitedData);
+                sortedData = sortByAtoZ(originalArrayData);
             } else {
-                const sortedData = sortByDateNewestToOldest(originalArrayData);
-                const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
-                setDisplayedData(limitedData);
+                sortedData = sortByDateNewestToOldest(originalArrayData);
             }
+            const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
+            setDisplayedData(limitedData);
         } else {
             const filteredData = originalArrayData.filter(item => {
+                if (!item) return false;
+                
                 const title = item.title || '';
                 const location = item.location || '';
                 const type = item.type || '';
@@ -217,13 +268,12 @@ const Vacancies = () => {
                     type.toLowerCase().includes(searchLower);
             });
 
-            let sortedFilteredData = filteredData;
+            let sortedFilteredData;
             if (isSortedByDate) {
                 sortedFilteredData = sortByDateOldestToNewest(filteredData);
             } else if (isSortedByAtoZ) {
                 sortedFilteredData = sortByAtoZ(filteredData);
             } else {
-                //newest to oldest
                 sortedFilteredData = sortByDateNewestToOldest(filteredData);
             }
 
@@ -233,7 +283,7 @@ const Vacancies = () => {
     }, [searchTerm, originalArrayData, isSortedByDate, isSortedByAtoZ, showAll, itemsToShow]);
 
     const isJobExpired = (job) => {
-        if (!job.expireDate) return false;
+        if (!job || !job.expireDate) return false;
 
         const monthNames = {
             'Yanvar': 1, 'Fevral': 2, 'Mart': 3, 'Aprel': 4, 'May': 5, 'Iyun': 6,
@@ -304,7 +354,6 @@ const Vacancies = () => {
         setAnimationKey(prevKey => prevKey + 1);
     };
 
-    // ADDED: A-Z sorting function
     const toggleSortByAtoZ = () => {
         if (originalArrayData.length === 0) return;
 
@@ -318,7 +367,6 @@ const Vacancies = () => {
             setDisplayedData(limitedData);
             setIsSortedByAtoZ(false);
         } else {
-            // Activate A-Z sorting
             const sortedData = sortByAtoZ(originalArrayData);
             const limitedData = showAll ? sortedData : sortedData.slice(0, itemsToShow);
             setDisplayedData(limitedData);
@@ -374,7 +422,10 @@ const Vacancies = () => {
     };
 
     const handleApplyClick = (job) => {
-        if (isJobExpired(job)) return;
+        if (!job) return;
+        
+        const expired = isJobExpired(job);
+        if (expired) return;
 
         setSelectedJob(job);
         setShowPopup(true);
@@ -387,11 +438,16 @@ const Vacancies = () => {
             cvText: '',
             linkedin: ''
         });
+        
+        // Update URL with job slug
+        navigate(`/vacancies/${job.slug}`, { replace: true });
     };
 
     const handleClosePopup = () => {
         setShowPopup(false);
         setSelectedJob(null);
+        // Clear URL when closing popup
+        navigate('/vacancies', { replace: true });
     };
 
     const handleInputChange = (e) => {
@@ -411,6 +467,8 @@ const Vacancies = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if (!selectedJob) return;
 
         try {
             const formDataToSend = new FormData();
@@ -430,12 +488,10 @@ const Vacancies = () => {
                 formDataToSend.append('cv', formData.cv);
             }
 
-            const response = await fetch('https://website-2808s.onrender.com/api/applications/submit', {
+            const response = await fetch('http://localhost:5000/api/applications/submit', {
                 method: 'POST',
                 body: formDataToSend
             });
-
-
 
             const result = await response.json();
 
@@ -459,7 +515,6 @@ const Vacancies = () => {
         <div className="section-column">
             <p className='Title-Header'>Vakansİyalar</p>
             <div className={`Section-Sort-Group ${isCompactSortGroup ? 'compact' : ''}`}>
-
                 <div className="Section-Sort-Left">
                     <div className="Sorts animated-1" onClick={handleFirstSortClick}>
                         {isColumnLayout ? (
@@ -509,17 +564,19 @@ const Vacancies = () => {
 
             {!showPopup && (
                 <div className={`Section-Card-Grid-container ${isColumnLayout ? 'column-layout' : 'row-layout'}`}
-                    key={animationKey} >
-                    {displayedData.length > 0 ? (
+                    key={animationKey}>
+                    {displayedData && displayedData.length > 0 ? (
                         displayedData.map((item) => {
+                            if (!item) return null;
+                            
                             const expired = isJobExpired(item);
                             return (
                                 <div className={`Cards-grid  Main-Card-grid ${isColumnLayout ? 'column-Cards-grid' : 'row-Cards-grid'} animated-${item.id + 1} ${expired ? 'expired-job' : ''}`}
-                                    key={`${item.id}-${animationKey}`} >
-                                    <div className={`Cards-Item-grid ${expired ? 'expired' : ''}`} onClick={() => handleApplyClick(item)}
-                                    >
+                                    key={`${item.id}-${animationKey}`}>
+                                    <div className={`Cards-Item-grid ${expired ? 'expired' : ''}`} 
+                                          onClick={() => handleApplyClick(item)}>
                                         <span className='Cards-Item-Folder'>
-                                            <p className='card-title-grid'>{item.title}</p>
+                                            <p className='card-title-grid'>{item.title || 'No Title'}</p>
                                             {item.date && (
                                                 <div className="Cards-Item-Bio">
                                                     <img src={item.dateImage} className='No-Select' alt="Date" />
@@ -533,9 +590,12 @@ const Vacancies = () => {
                                                 </div>
                                             )}
                                         </span>
-                                        <div className="Classic-Button ">
+                                        <div className="Classic-Button">
                                             <a
-                                                onClick={() => handleApplyClick(item)}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleApplyClick(item);
+                                                }}
                                                 className={expired ? 'expired-button' : ''}
                                             >
                                                 {expired ? 'Müraciət dayandırılıb' : 'Müraciət et'}
@@ -554,7 +614,7 @@ const Vacancies = () => {
             )}
 
             {/* Popup Form */}
-            {showPopup && (
+            {showPopup && selectedJob && (
                 <div className="popup-overlay">
                     <div className="popup-content">
                         <button className="close-button" onClick={handleClosePopup}>
@@ -565,8 +625,10 @@ const Vacancies = () => {
                                 {selectedJob.id === 0 ? (
                                     <>
                                         <h2>{selectedJob.title}</h2>
-                                        <div className="general-cv-text" >
-                                            <p style={{ whiteSpace: 'pre-line' }}>{jobDescriptions[selectedJob.id]}</p>
+                                        <div className="general-cv-text">
+                                            <p style={{ whiteSpace: 'pre-line' }}>
+                                                {jobDescriptions[selectedJob.id] || "Təsvir tapılmadı."}
+                                            </p>
                                         </div>
                                     </>
                                 ) : (
@@ -579,15 +641,18 @@ const Vacancies = () => {
                                                     <span>Son tarix: {selectedJob.expireDate}</span>
                                                 </div>
                                             )}
-                                            <div className="info-item">
-                                                <img src={selectedJob.dateImage} alt="Date" />
-                                                <span>{selectedJob.date}</span>
-                                            </div>
-
-                                            <div className="info-item">
-                                                <img src={selectedJob.locationImage} alt="Location" />
-                                                <span>{selectedJob.location}</span>
-                                            </div>
+                                            {selectedJob.date && (
+                                                <div className="info-item">
+                                                    <img src={selectedJob.dateImage} alt="Date" />
+                                                    <span>{selectedJob.date}</span>
+                                                </div>
+                                            )}
+                                            {selectedJob.location && (
+                                                <div className="info-item">
+                                                    <img src={selectedJob.locationImage} alt="Location" />
+                                                    <span>{selectedJob.location}</span>
+                                                </div>
+                                            )}
                                             {selectedJob.type && (
                                                 <div className="info-item">
                                                     <img src={selectedJob.typeImage} alt="Job Type" />
@@ -623,7 +688,7 @@ const Vacancies = () => {
                                                 }).reduce((acc, line, index) => {
                                                     if (acc === null) return [line];
                                                     return [...acc, <br key={`br-${index}`} />, line];
-                                                }, null)}
+                                                }, null) || "Təsvir tapılmadı."}
                                             </p>
                                         </div>
                                     </>
@@ -657,8 +722,7 @@ const Vacancies = () => {
                                     <div className="form-group">
                                         <input
                                             type="url"
-                                            placeholder='LinkedIn profil URL-nizi daxil edin (İstəyə bağlı)
-'
+                                            placeholder='LinkedIn profil URL-nizi daxil edin (İstəyə bağlı)'
                                             id="linkedin"
                                             name="linkedin"
                                             value={formData.linkedin}
@@ -679,7 +743,6 @@ const Vacancies = () => {
                                                     required
                                                 />
                                             </div>
-
                                         </>
                                     ) : null}
 
@@ -719,10 +782,8 @@ const Vacancies = () => {
                                                 value={formData.cvText}
                                                 onChange={handleInputChange}
                                                 rows={5}
-
                                             />
                                         </div>
-
                                     )}
 
                                     <button type="submit" className="Main-Button">MÜRACİƏTİ GÖNDƏR</button>
